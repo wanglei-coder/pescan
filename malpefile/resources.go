@@ -1,14 +1,12 @@
 package malpefile
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/saferwall/pe"
 	"strings"
 )
 
 func (p *PEFile) Resources() {
-
+	p.Data.Resources = getResources(p.peFile)
 }
 
 func getResources(peFile *pe.File) []*Resource {
@@ -16,6 +14,7 @@ func getResources(peFile *pe.File) []*Resource {
 		return nil
 	}
 
+	resourceList := make([]*Resource, 0, getResourceCount(peFile))
 	count := 1
 	for _, resourceType := range peFile.Resources.Entries {
 		for _, resourceId := range resourceType.Directory.Entries {
@@ -24,7 +23,6 @@ func getResources(peFile *pe.File) []*Resource {
 				offset := resourceLang.Data.Struct.OffsetToData
 				size := resourceLang.Data.Struct.Size
 				data, err := getData(offset, size, peFile)
-				fmt.Println(len(data), data[0], data[len(data)-1])
 				if err != nil {
 					continue
 				}
@@ -41,14 +39,24 @@ func getResources(peFile *pe.File) []*Resource {
 				resource.SubLanguage = getSubLang(resourceLang)
 				resource.Id = count
 				resource.LanguageDesc = getLanguageDesc(resourceLang)
-
+				resourceList = append(resourceList, &resource)
 				count++
-				d, _ := json.Marshal(resource)
-				fmt.Println(string(d))
 			}
 		}
 	}
-	return nil
+	return resourceList
+}
+
+func getResourceCount(peFile *pe.File) int {
+	count := 0
+	for _, resourceType := range peFile.Resources.Entries {
+		for _, resourceId := range resourceType.Directory.Entries {
+			for range resourceId.Directory.Entries {
+				count++
+			}
+		}
+	}
+	return count
 }
 
 func getName(resourceType pe.ResourceDirectoryEntry) string {
@@ -125,18 +133,24 @@ func getSectionByRva(rva uint32, peFile *pe.File) *pe.Section {
 	return nil
 }
 
-func getData(offset, size uint32, peFile *pe.File) ([]byte, error) {
-	//totalSize := offset + size
+func getData(rva, length uint32, peFile *pe.File) ([]byte, error) {
 
-	section := getSectionByRva(offset, peFile)
+	section := getSectionByRva(rva, peFile)
+
 	if section != nil {
-		return section.Data(offset, size, peFile), nil
+		return section.Data(rva, length, peFile), nil
 	}
 
-	buf, err := peFile.ReadBytesAtOffset(offset, size)
-	return buf, err
-}
+	var end uint32
+	if length > 0 {
+		end = rva + length
+	} else {
+		end = 0
+	}
 
-func getSectionData(rva, length uint32, peFile *pe.File) []byte {
-	return nil
+	if rva < uint32(len(peFile.Header)) {
+		return peFile.Header[rva:end], nil
+	}
+
+	return peFile.ReadBytesAtOffset(rva, length)
 }

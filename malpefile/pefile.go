@@ -1,11 +1,7 @@
 package malpefile
 
 import (
-	//"debug/pe"
-	"encoding/binary"
-	"encoding/hex"
 	"github.com/saferwall/pe"
-	"strconv"
 )
 
 type PEFile struct {
@@ -18,7 +14,7 @@ type PEFile struct {
 
 func NewPEFile(filename, peidPath string, logger Logger) (*PEFile, error) {
 
-	exe, err := pe.New(filename, nil)
+	exe, err := pe.New(filename, &pe.Options{SectionEntropy: true})
 	if err != nil {
 		logger.Errorf("Error while opening file: %s, reason: %v", filename, err)
 		return nil, err
@@ -58,14 +54,7 @@ func (p *PEFile) Run() {
 	p.Export()
 	p.ExportsTimestamp()
 	p.ExportsModuleName()
-}
 
-func Uint32ToHex(i uint32) string {
-	buf := make([]byte, 4)
-	binary.BigEndian.PutUint32(buf, i)
-	return hex.EncodeToString(buf)
-}
-
-func Hex(i uint64) string {
-	return "0x" + strconv.FormatUint(i, 16)
+	// resources
+	p.Resources()
 }

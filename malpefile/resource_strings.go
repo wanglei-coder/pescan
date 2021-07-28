@@ -1,5 +1,7 @@
 package malpefile
 
+import "github.com/saferwall/pe"
+
 const (
 	BYTE  = 1
 	WORD  = 2
@@ -24,3 +26,52 @@ var ITEM_TYPES = map[int]string{
 	0x84: "SCROLL BAR",
 	0x85: "COMBO BOX",
 }
+
+func (p *PEFile) ResourceStrings() {
+
+}
+
+func getResourceStrings(peFile *pe.File) {
+	if peFile.Resources == nil {
+		return
+	}
+
+	for _, dirType := range peFile.Resources.Entries {
+		dirTypeName := getDirTypeName(dirType)
+		for _, nameID := range dirType.Directory.Entries {
+			name := getNameIDName(nameID)
+			for _, language := range nameID.Directory.Entries {
+				var stringList []string
+
+				switch dirTypeName {
+				case "RT_DIALOG":
+					data_rva = language.Data.Struct.OffsetToData
+					size = language.Data.Struct.Size
+				case "RT_STRING":
+
+				}
+			}
+		}
+	}
+}
+
+func getDirTypeName(dirType pe.ResourceDirectoryEntry) string {
+	dirTypeName := dirType.Name
+	if dirTypeName == "" {
+		value, found := ResourceType[int(dirType.ID)]
+		if found {
+			return value.(string)
+		}
+	}
+	return dirTypeName
+}
+
+func getNameIDName(nameID pe.ResourceDirectoryEntry) string {
+	name := nameID.Name
+	if name == "" {
+		name = Hex(uint64(nameID.ID))
+	}
+	return name
+}
+
+//func

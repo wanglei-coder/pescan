@@ -3,10 +3,23 @@ package malpefile
 import (
 	"crypto/md5"
 	"crypto/sha256"
+	"encoding/binary"
 	"encoding/hex"
 	"github.com/gabriel-vasile/mimetype"
 	"math"
+	"strconv"
 )
+
+// Hex with "0x"
+func Hex(i uint64) string {
+	return "0x" + strconv.FormatUint(i, 16)
+}
+
+func Uint32ToHex(i uint32) string {
+	buf := make([]byte, 4)
+	binary.BigEndian.PutUint32(buf, i)
+	return hex.EncodeToString(buf)
+}
 
 // getMD5 hashes using md5 algorithm.
 func getMD5(buf []byte) string {
@@ -46,6 +59,5 @@ func getEntropy(buf []byte) float64 {
 }
 
 func getType(buf []byte) string {
-	mtype := mimetype.Detect(buf)
-	return mtype.String()
+	return mimetype.Detect(buf).String()
 }

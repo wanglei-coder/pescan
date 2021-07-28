@@ -37,7 +37,8 @@ func TestNewPEFile(t *testing.T) {
 }
 
 func TestGetType(t *testing.T) {
-	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	path := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
 	m, err := NewPEFile(path, path, defaultLogger)
 	if err != nil {
 		defaultLogger.Error(err)
@@ -53,7 +54,8 @@ func TestLang(t *testing.T) {
 
 func TestCOFF(t *testing.T) {
 	//path := "C:\\Users\\86187\\Downloads\\goland-2020.3.1.exe"
-	filename := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//filename := "C:\\Users\\86187\\Downloads\\PCQQ2021.exe"
+	filename := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
 
 	exe, err := pe.New(filename, &pe.Options{
 		Fast:           false,

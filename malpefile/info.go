@@ -23,16 +23,15 @@ func (p *PEFile) getInfoFromOptionHeader() {
 		p.Data.Info.EntryPoint = Hex(uint64(OptionalHeader.AddressOfEntryPoint))
 		p.Data.Info.ImageBase = int(OptionalHeader.ImageBase)
 		p.Data.Info.SizeOfImage = OptionalHeader.SizeOfImage
-		p.Data.Info.LinkerVersion = uint16(OptionalHeader.MajorLinkerVersion) + uint16(OptionalHeader.MinorLinkerVersion)
-		p.Data.Info.OsVersion = uint32(OptionalHeader.MajorOperatingSystemVersion) + uint32(OptionalHeader.MinorOperatingSystemVersion)
+		p.Data.Info.LinkerVersion = fmt.Sprintf("%02d.%02d", OptionalHeader.MajorLinkerVersion, OptionalHeader.MinorLinkerVersion)
+		p.Data.Info.OsVersion = fmt.Sprintf("%02d.%02d", OptionalHeader.MajorOperatingSystemVersion, OptionalHeader.MinorOperatingSystemVersion)
 	} else {
 		OptionalHeader := p.peFile.NtHeader.OptionalHeader.(pe.ImageOptionalHeader32)
 		p.Data.Info.EntryPoint = Hex(uint64(OptionalHeader.AddressOfEntryPoint))
 		p.Data.Info.ImageBase = int(OptionalHeader.ImageBase)
 		p.Data.Info.SizeOfImage = OptionalHeader.SizeOfImage
-		p.Data.Info.LinkerVersion = uint16(OptionalHeader.MajorLinkerVersion) + uint16(OptionalHeader.MinorLinkerVersion)
-		p.Data.Info.OsVersion = uint32(OptionalHeader.MajorOperatingSystemVersion) + uint32(OptionalHeader.MinorOperatingSystemVersion)
-
+		p.Data.Info.LinkerVersion = fmt.Sprintf("%02d.%02d", OptionalHeader.MajorLinkerVersion, OptionalHeader.MinorLinkerVersion)
+		p.Data.Info.OsVersion = fmt.Sprintf("%02d.%02d", OptionalHeader.MajorOperatingSystemVersion, OptionalHeader.MinorOperatingSystemVersion)
 	}
 
 }

@@ -31,29 +31,29 @@ func (p *PEFile) ResourceStrings() {
 
 }
 
-func getResourceStrings(peFile *pe.File) {
-	if peFile.Resources == nil {
-		return
-	}
-
-	for _, dirType := range peFile.Resources.Entries {
-		dirTypeName := getDirTypeName(dirType)
-		for _, nameID := range dirType.Directory.Entries {
-			name := getNameIDName(nameID)
-			for _, language := range nameID.Directory.Entries {
-				var stringList []string
-
-				switch dirTypeName {
-				case "RT_DIALOG":
-					data_rva = language.Data.Struct.OffsetToData
-					size = language.Data.Struct.Size
-				case "RT_STRING":
-
-				}
-			}
-		}
-	}
-}
+//func getResourceStrings(peFile *pe.File) {
+//	if peFile.Resources == nil {
+//		return
+//	}
+//
+//	for _, dirType := range peFile.Resources.Entries {
+//		dirTypeName := getDirTypeName(dirType)
+//		for _, nameID := range dirType.Directory.Entries {
+//			name := getNameIDName(nameID)
+//			for _, language := range nameID.Directory.Entries {
+//				var stringList []string
+//
+//				switch dirTypeName {
+//				case "RT_DIALOG":
+//					data_rva = language.Data.Struct.OffsetToData
+//					size = language.Data.Struct.Size
+//				case "RT_STRING":
+//
+//				}
+//			}
+//		}
+//	}
+//}
 
 func getDirTypeName(dirType pe.ResourceDirectoryEntry) string {
 	dirTypeName := dirType.Name

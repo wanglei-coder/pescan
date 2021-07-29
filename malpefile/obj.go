@@ -1,30 +1,31 @@
 package malpefile
 
 type Result struct {
-	RichHeaderInfo      []*RichHeaderInfo
-	DataDirectories     []*DataDirectory
-	Info                Info
-	Debug               Debug
-	Imports             []map[string][]Function
-	ImpHash             string
-	Sections            []Section
-	Exports             []*Export
-	ExportsTimestamp    string
-	ExportsModuleName   string
-	ResourceVersionInfo map[string]string
-	Resources           []*Resource
+	RichHeaderInfo      []*RichHeaderInfo       `json:"rich_header_info,omitempty"`
+	DataDirectories     []*DataDirectory        `json:"data_directories,omitempty"`
+	Info                Info                    `json:"info"`
+	Debug               Debug                   `json:"debug"`
+	Imports             []map[string][]Function `json:"imports,omitempty"`
+	ImpHash             string                  `json:"imp_hash,omitempty"`
+	Sections            []Section               `json:"sections,omitempty"`
+	Exports             []*Export               `json:"exports,omitempty"`
+	ExportsTimestamp    string                  `json:"exports_timestamp,omitempty"`
+	ExportsModuleName   string                  `json:"exports_module_name,omitempty"`
+	ResourceVersionInfo map[string]string       `json:"resource_version_info,omitempty"`
+	Resources           []*Resource             `json:"resources,omitempty"`
+	Signature           Signature               `json:"signature"`
 }
 
 type Info struct {
-	CompileTime        CompileTime `json:"compile_time"`
+	LinkerVersion      string      `json:"linker_version,omitempty"`
+	ImageBase          int         `json:"image_base,omitempty"`
+	CompileTime        CompileTime `json:"compiletime"`
+	NumberOfSections   uint16      `json:"number_of_sections,omitempty"`
+	OsVersion          string      `json:"os_version,omitempty"`
+	SizeOfImage        uint32      `json:"size_of_image,omitempty"`
 	EntryPoint         string      `json:"entry_point"`
 	OriginalFilename   string      `json:"original_filename,omitempty"`
 	FileDescription    string      `json:"file_description,omitempty"`
-	ImageBase          int         `json:"image_base,omitempty"`
-	SizeOfImage        uint32      `json:"size_of_image,omitempty"`
-	LinkerVersion      uint16      `json:"linker_version,omitempty"`
-	OsVersion          uint32      `json:"os_version,omitempty"`
-	NumberOfSections   uint16      `json:"number_of_sections,omitempty"`
 	MachineType        string      `json:"machine_type,omitempty"`
 	CalculatedFileSize int         `json:"calculated_file_size,omitempty"`
 }
@@ -87,4 +88,23 @@ type Resource struct {
 	SHA256       string  `json:"sha256,omitempty"`
 	Type         string  `json:"type,omitempty"`
 	MD5          string  `json:"md5,omitempty"`
+}
+
+type Signature struct {
+	Heuristic string  `json:"heuristic,omitempty"`
+	Certs     []*Cert `json:"certs,omitempty"`
+}
+
+type Cert struct {
+	Signers []*Signer `json:"signer,omitempty"`
+	Others  []*Signer `json:"other,omitempty"`
+}
+
+type Signer struct {
+	CertValidTo   string `json:"cert_valid_to"`
+	CertSerialNo  string `json:"cert_serial_no"`
+	CertValidFrom string `json:"cert_valid_from"`
+	CertVersion   int    `json:"cert_version"`
+	CertSubject   string `json:"cert_subject"`
+	CertIssuer    string `json:"cert_issuer"`
 }

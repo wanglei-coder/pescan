@@ -17,6 +17,7 @@ func getResources(peFile *pe.File) []*Resource {
 	resourceList := make([]*Resource, 0, getResourceCount(peFile))
 	count := 1
 	for _, resourceType := range peFile.Resources.Entries {
+		name := getName(resourceType)
 		for _, resourceId := range resourceType.Directory.Entries {
 			for _, resourceLang := range resourceId.Directory.Entries {
 
@@ -28,7 +29,7 @@ func getResources(peFile *pe.File) []*Resource {
 				}
 
 				var resource Resource
-				resource.Name = resourceType.Name
+				resource.Name = name
 				resource.Entropy = getEntropy(data)
 				resource.MD5 = getMD5(data)
 				resource.SHA256 = getSHA256(data)
@@ -39,6 +40,7 @@ func getResources(peFile *pe.File) []*Resource {
 				resource.SubLanguage = getSubLang(resourceLang)
 				resource.Id = count
 				resource.LanguageDesc = getLanguageDesc(resourceLang)
+
 				resourceList = append(resourceList, &resource)
 				count++
 			}
@@ -63,8 +65,7 @@ func getName(resourceType pe.ResourceDirectoryEntry) string {
 	if resourceType.Name != "" {
 		return resourceType.Name
 	}
-
-	name, found := ResourceType[resourceType.ID]
+	name, found := ResourceType[int(resourceType.ID)]
 	if found {
 		switch name.(type) {
 		case string:
@@ -77,7 +78,10 @@ func getName(resourceType pe.ResourceDirectoryEntry) string {
 func getLang(resourceLang pe.ResourceDirectoryEntry) string {
 	key := int(resourceLang.Data.Lang)
 	if langName, found := LANG[key]; found {
-		return langName.(string)
+		switch langName.(type) {
+		case string:
+			return langName.(string)
+		}
 	}
 	return ""
 }

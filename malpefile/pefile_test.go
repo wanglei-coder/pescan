@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 	"reflect"
 	"testing"
+	"time"
 )
 
 var defaultLogger = zap.NewExample().Sugar()
@@ -25,26 +26,58 @@ func TestDebugPe(t *testing.T) {
 }
 
 func TestNewPEFile(t *testing.T) {
-	path := "C:\\Users\\86187\\Downloads\\goland-2020.3.1.exe"
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\86187\\Downloads\\goland-2020.3.1.exe"
 	m, err := NewPEFile(path, path, defaultLogger)
 	if err != nil {
 		defaultLogger.Error(err)
 		return
 	}
-	data, _ := json.Marshal(m.peFile)
-	t.Log(string(data))
+	m.Run()
+	data, _ := json.Marshal(m.Data)
+	t.Log("\n" + string(data))
 	t.Log(len(m.peFile.IAT))
 }
 
-func TestGetType(t *testing.T) {
+func TestPEFile_ImpHash(t *testing.T) {
 	//path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
-	path := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
+	path := "C:\\Users\\86187\\Downloads\\WeChatSetup.exe"
 	m, err := NewPEFile(path, path, defaultLogger)
 	if err != nil {
 		defaultLogger.Error(err)
 		return
 	}
-	getResources(m.peFile)
+	h, _ := m.peFile.ImpHash()
+
+	t.Log(h)
+}
+
+func TestGetType(t *testing.T) {
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
+	m, err := NewPEFile(path, path, defaultLogger)
+	if err != nil {
+		defaultLogger.Error(err)
+		return
+	}
+	resourceList := getResources(m.peFile)
+	for _, r := range resourceList {
+		t.Logf("%+v", r)
+	}
+}
+
+func TestSignature(t *testing.T) {
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
+	m, err := NewPEFile(path, path, defaultLogger)
+	if err != nil {
+		defaultLogger.Error(err)
+		return
+	}
+	exe := m.peFile
+	s := getSignature(exe)
+	data, _ := json.Marshal(s)
+	fmt.Println(string(data))
 }
 
 func TestLang(t *testing.T) {
@@ -131,4 +164,42 @@ func TestTimeStampToDate(t *testing.T) {
 	timestamp := 1621935220
 	c, err := carbon.CreateFromTimestamp(int64(timestamp), "UTC")
 	t.Log(c, err)
+}
+
+func TestCert(t *testing.T) {
+	s := &Signer{
+		CertValidTo:   "2024-02-22T23:59:59+00:00",
+		CertSerialNo:  "18874367992585516799620967379699280448",
+		CertValidFrom: "2020-11-25T00:00:00+00:00",
+		CertVersion:   0,
+		CertSubject:   "CN=Tencent",
+		CertIssuer:    "CN=DigiCert",
+	}
+
+	ss := []*Signer{s}
+	os := []*Signer{s}
+
+	c := &Cert{
+		Signers: ss,
+		Others:  os,
+	}
+
+	cs := []*Cert{c}
+
+	signature := Signature{
+		Heuristic: "sda",
+		Certs:     cs,
+	}
+	data, _ := json.Marshal(signature)
+	fmt.Println(string(data))
+}
+
+func TestTimeformat(t *testing.T) {
+	tf := time.Now()
+	t.Log(tf.Format("2006-01-02T15:04:05+00:00"))
+}
+
+func TestFormat(t *testing.T) {
+	a := fmt.Sprintf("%02d.%02d", uint8(14), 0)
+	t.Log(a)
 }

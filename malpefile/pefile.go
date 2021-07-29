@@ -48,6 +48,8 @@ func (p *PEFile) Run() {
 	p.ImpHash()
 	p.Section()
 	p.DataDirectory()
+
+	// import
 	p.Import()
 
 	// exports
@@ -57,4 +59,7 @@ func (p *PEFile) Run() {
 
 	// resources
 	p.Resources()
+
+	// signature
+	p.Signature()
 }

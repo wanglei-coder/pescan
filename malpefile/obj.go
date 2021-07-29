@@ -11,7 +11,7 @@ type Result struct {
 	Exports             []*Export               `json:"exports,omitempty"`
 	ExportsTimestamp    string                  `json:"exports_timestamp,omitempty"`
 	ExportsModuleName   string                  `json:"exports_module_name,omitempty"`
-	ResourceVersionInfo map[string]string       `json:"resource_version_info,omitempty"`
+	ResourceVersionInfo *ResourceVersionInfo    `json:"resource_version_info,omitempty"`
 	Resources           []*Resource             `json:"resources,omitempty"`
 	Signature           Signature               `json:"signature"`
 }
@@ -107,4 +107,16 @@ type Signer struct {
 	CertVersion   int    `json:"cert_version"`
 	CertSubject   string `json:"cert_subject"`
 	CertIssuer    string `json:"cert_issuer"`
+}
+
+type ResourceVersionInfo struct {
+	CompanyName      string `json:"company_name,omitempty"`
+	FileDescription  string `json:"file_description,omitempty"`
+	FileVersion      string `json:"file_version,omitempty"`
+	LegalCopyright   string `json:"legal_copyright,omitempty"`
+	LegalTrademarks  string `json:"legal_trademarks,omitempty"`
+	OriginalFilename string `json:"original_filename,omitempty"`
+	ProductVersion   string `json:"product_version,omitempty"`
+	PrivateBuild     string `json:"private_build,omitempty"`
+	SpecialBuild     string `json:"special_build,omitempty"`
 }

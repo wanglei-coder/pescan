@@ -5,7 +5,7 @@ import (
 )
 
 type PEFile struct {
-	filename string
+	Filename string
 	peidPath string
 	peFile   *pe.File
 	logger   Logger
@@ -27,7 +27,7 @@ func NewPEFile(filename, peidPath string, logger Logger) (*PEFile, error) {
 	}
 
 	peFile := &PEFile{
-		filename: filename,
+		Filename: filename,
 		peidPath: peidPath,
 		peFile:   exe,
 		logger:   logger,
@@ -59,6 +59,7 @@ func (p *PEFile) Run() {
 
 	// resources
 	p.Resources()
+	p.ResourceVersionInfo()
 
 	// signature
 	p.Signature()

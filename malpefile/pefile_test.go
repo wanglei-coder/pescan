@@ -4,6 +4,7 @@ import (
 	debugPE "debug/pe"
 	"encoding/json"
 	"fmt"
+	"github.com/gonutz/w32/v2"
 	"github.com/saferwall/pe"
 	"github.com/uniplaces/carbon"
 	"go.uber.org/zap"
@@ -13,6 +14,67 @@ import (
 )
 
 var defaultLogger = zap.NewExample().Sugar()
+
+func TestDebugPes(tt *testing.T) {
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	size := w32.GetFileVersionInfoSize(path)
+	if size <= 0 {
+		panic("GetFileVersionInfoSize failed")
+	}
+
+	info := make([]byte, size)
+	ok := w32.GetFileVersionInfo(path, info)
+	if !ok {
+		panic("GetFileVersionInfo failed")
+	}
+
+	fixed, ok := w32.VerQueryValueRoot(info)
+	if !ok {
+		panic("VerQueryValueRoot failed")
+	}
+	version := fixed.FileVersion()
+	fmt.Printf(
+		"file version: %d.%d.%d.%d\n",
+		version&0xFFFF000000000000>>48,
+		version&0x0000FFFF00000000>>32,
+		version&0x00000000FFFF0000>>16,
+		version&0x000000000000FFFF>>0,
+	)
+
+	translations, ok := w32.VerQueryValueTranslations(info)
+	if !ok {
+		panic("VerQueryValueTranslations failed")
+	}
+	if len(translations) == 0 {
+		panic("no translation found")
+	}
+	fmt.Println("translations:", translations)
+
+	t := translations[0]
+	// w32.CompanyName simply translates to "CompanyName"
+	company, ok := w32.VerQueryValueString(info, t, w32.CompanyName)
+	if !ok {
+		panic("cannot get company name")
+	}
+	fmt.Println("company:", company)
+
+	FileDescription, ok := w32.VerQueryValueString(info, t, w32.FileDescription)
+	FileVersion, ok := w32.VerQueryValueString(info, t, w32.FileVersion)
+	LegalCopyright, ok := w32.VerQueryValueString(info, t, w32.LegalCopyright)
+	LegalTrademarks, ok := w32.VerQueryValueString(info, t, w32.LegalTrademarks)
+	OriginalFilename, ok := w32.VerQueryValueString(info, t, w32.OriginalFilename)
+	ProductVersion, ok := w32.VerQueryValueString(info, t, w32.ProductVersion)
+	PrivateBuild, ok := w32.VerQueryValueString(info, t, w32.PrivateBuild)
+	SpecialBuild, ok := w32.VerQueryValueString(info, t, w32.SpecialBuild)
+	fmt.Println("FileDescription: ", FileDescription)
+	fmt.Println("FileVersion: ", FileVersion)
+	fmt.Println("LegalCopyright: ", LegalCopyright)
+	fmt.Println("LegalTrademarks: ", LegalTrademarks)
+	fmt.Println("OriginalFilename: ", OriginalFilename)
+	fmt.Println("ProductVersion: ", ProductVersion)
+	fmt.Println("PrivateBuild: ", PrivateBuild)
+	fmt.Println("SpecialBuild: ", SpecialBuild)
+}
 
 func TestDebugPe(t *testing.T) {
 	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
@@ -33,10 +95,10 @@ func TestNewPEFile(t *testing.T) {
 		defaultLogger.Error(err)
 		return
 	}
+	fmt.Println(string(m.peFile.Header))
 	m.Run()
 	data, _ := json.Marshal(m.Data)
 	t.Log("\n" + string(data))
-	t.Log(len(m.peFile.IAT))
 }
 
 func TestPEFile_ImpHash(t *testing.T) {
@@ -87,7 +149,7 @@ func TestLang(t *testing.T) {
 
 func TestCOFF(t *testing.T) {
 	//path := "C:\\Users\\86187\\Downloads\\goland-2020.3.1.exe"
-	//filename := "C:\\Users\\86187\\Downloads\\PCQQ2021.exe"
+	//Filename := "C:\\Users\\86187\\Downloads\\PCQQ2021.exe"
 	filename := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
 
 	exe, err := pe.New(filename, &pe.Options{

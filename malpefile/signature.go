@@ -41,23 +41,22 @@ func getSignature(peFile *pe.File) Signature {
 			_ = parseSecurityDirectory(va, size, peFile, &cert)
 		}
 	}
-	var signature Signature
-	var heuristic string
+
+	heuristic := ""
 	if peFile.Certificates != nil {
 		heuristic = "This PE appears to have a legitimate signature"
-	} else {
-		heuristic = ""
 	}
-	signature.Heuristic = heuristic
-	signature.Certs = []*Cert{&cert}
 
+	signature := Signature{
+		Heuristic: heuristic,
+		Certs:     []*Cert{&cert},
+	}
 	return signature
 }
 
 func parseSecurityDirectory(rva, size uint32, peFile *pe.File, customCert *Cert) error {
 	var pkcs *pkcs7.PKCS7
-	//var isValid bool
-	//certInfo := pe.CertInfo{}
+
 	certHeader := pe.WinCertificate{}
 	certSize := uint32(binary.Size(certHeader))
 

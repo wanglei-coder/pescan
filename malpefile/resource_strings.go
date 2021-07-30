@@ -1,6 +1,8 @@
 package malpefile
 
-import "github.com/saferwall/pe"
+import (
+	"pescan/pe"
+)
 
 const (
 	BYTE  = 1
@@ -45,8 +47,8 @@ func (p *PEFile) ResourceStrings() {
 //
 //				switch dirTypeName {
 //				case "RT_DIALOG":
-//					data_rva = language.Data.Struct.OffsetToData
-//					size = language.Data.Struct.Size
+//					data_rva := language.Data.Struct.OffsetToData
+//					size := language.Data.Struct.Size
 //				case "RT_STRING":
 //
 //				}

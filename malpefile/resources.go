@@ -1,7 +1,7 @@
 package malpefile
 
 import (
-	"github.com/saferwall/pe"
+	"pescan/pe"
 	"strings"
 )
 
@@ -23,7 +23,7 @@ func getResources(peFile *pe.File) []*Resource {
 
 				offset := resourceLang.Data.Struct.OffsetToData
 				size := resourceLang.Data.Struct.Size
-				data, err := getData(offset, size, peFile)
+				data, err := peFile.GetData(offset, size)
 				if err != nil {
 					continue
 				}
@@ -126,35 +126,4 @@ func getLanguageDesc(resourceLang pe.ResourceDirectoryEntry) string {
 		return languageDesc
 	}
 	return "unknown language"
-}
-
-func getSectionByRva(rva uint32, peFile *pe.File) *pe.Section {
-	for _, section := range peFile.Sections {
-		if section.Contains(rva, peFile) {
-			return &section
-		}
-	}
-	return nil
-}
-
-func getData(rva, length uint32, peFile *pe.File) ([]byte, error) {
-
-	section := getSectionByRva(rva, peFile)
-
-	if section != nil {
-		return section.Data(rva, length, peFile), nil
-	}
-
-	var end uint32
-	if length > 0 {
-		end = rva + length
-	} else {
-		end = 0
-	}
-
-	if rva < uint32(len(peFile.Header)) {
-		return peFile.Header[rva:end], nil
-	}
-
-	return peFile.ReadBytesAtOffset(rva, length)
 }

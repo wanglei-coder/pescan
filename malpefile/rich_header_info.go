@@ -1,12 +1,16 @@
 package malpefile
 
-import "github.com/saferwall/pe"
+import "pescan/pe"
 
 func (p *PEFile) RichHeaderInfo() {
 	p.Data.RichHeaderInfo = getRichHeaderInfo(p.peFile)
 }
 
 func getRichHeaderInfo(p *pe.File) []*RichHeaderInfo {
+	if p.RichHeader == nil {
+		return nil
+	}
+
 	numberOfCompID := len(p.RichHeader.CompIDs)
 	if numberOfCompID == 0 {
 		return nil

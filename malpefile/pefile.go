@@ -1,7 +1,9 @@
 package malpefile
 
 import (
-	"github.com/saferwall/pe"
+	"go.uber.org/zap"
+	"pescan/pe"
+	"time"
 )
 
 type PEFile struct {
@@ -14,6 +16,11 @@ type PEFile struct {
 
 func NewPEFile(filename, peidPath string, logger Logger) (*PEFile, error) {
 
+	if logger == nil {
+		_logger, _ := zap.NewProduction()
+		logger = _logger.Sugar()
+	}
+
 	exe, err := pe.New(filename, &pe.Options{SectionEntropy: true})
 	if err != nil {
 		logger.Errorf("Error while opening file: %s, reason: %v", filename, err)
@@ -23,7 +30,6 @@ func NewPEFile(filename, peidPath string, logger Logger) (*PEFile, error) {
 	err = exe.Parse()
 	if err != nil {
 		logger.Errorf("Error while parsing file: %s, reason: %v", filename, err)
-		return nil, err
 	}
 
 	peFile := &PEFile{
@@ -63,4 +69,23 @@ func (p *PEFile) Run() {
 
 	// signature
 	p.Signature()
+}
+
+func (p *PEFile) RunWithTimeCost() *Result {
+	startTime := time.Now()
+	p.Run()
+	endTime := time.Now()
+	timeCost := endTime.Sub(startTime)
+	p.logger.Infof("fileName: %s, Cost Time: %s", p.Filename, timeCost)
+	return &p.Data
+}
+
+func GetPEFileInfo(filename, peidPath string, logger Logger) (*Result, error) {
+	peFile, err := NewPEFile(filename, peidPath, logger)
+	if err != nil {
+		return nil, err
+	}
+
+	peFile.Run()
+	return &peFile.Data, nil
 }

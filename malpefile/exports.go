@@ -1,6 +1,6 @@
 package malpefile
 
-import "github.com/saferwall/pe"
+import "pescan/pe"
 
 func (p *PEFile) Export() {
 	p.Data.Exports = getExports(p.peFile)

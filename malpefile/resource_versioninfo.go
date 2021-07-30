@@ -6,6 +6,11 @@ import (
 )
 
 func (p *PEFile) ResourceVersionInfo() {
+	defer func() {
+		if err := recover(); err != nil {
+			p.logger.Error("recover: ", err)
+		}
+	}()
 
 	p.Data.ResourceVersionInfo, _ = getResourceVersionInfo(p.Filename)
 
@@ -28,16 +33,20 @@ func getResourceVersionInfo(path string) (*ResourceVersionInfo, error) {
 	}
 	translation := translations[0]
 
+	_getItem := func(item string) string {
+		return getItem(info, translation, item)
+	}
+
 	resourceVersionInfo := &ResourceVersionInfo{
-		CompanyName:      getItem(info, translation, w32.CompanyName),
-		FileDescription:  getItem(info, translation, w32.FileDescription),
-		FileVersion:      getItem(info, translation, w32.FileVersion),
-		LegalCopyright:   getItem(info, translation, w32.LegalCopyright),
-		LegalTrademarks:  getItem(info, translation, w32.LegalTrademarks),
-		OriginalFilename: getItem(info, translation, w32.OriginalFilename),
-		ProductVersion:   getItem(info, translation, w32.ProductVersion),
-		PrivateBuild:     getItem(info, translation, w32.PrivateBuild),
-		SpecialBuild:     getItem(info, translation, w32.SpecialBuild),
+		CompanyName:      _getItem(w32.CompanyName),
+		FileDescription:  _getItem(w32.FileDescription),
+		FileVersion:      _getItem(w32.FileVersion),
+		LegalCopyright:   _getItem(w32.LegalCopyright),
+		LegalTrademarks:  _getItem(w32.LegalTrademarks),
+		OriginalFilename: _getItem(w32.OriginalFilename),
+		ProductVersion:   _getItem(w32.ProductVersion),
+		PrivateBuild:     _getItem(w32.PrivateBuild),
+		SpecialBuild:     _getItem(w32.SpecialBuild),
 	}
 
 	return resourceVersionInfo, nil

@@ -1,8 +1,8 @@
 package malpefile
 
 import (
-	"github.com/saferwall/pe"
 	"github.com/uniplaces/carbon"
+	"pescan/pe"
 	"time"
 )
 

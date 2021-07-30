@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gonutz/w32/v2"
-	"github.com/saferwall/pe"
 	"github.com/uniplaces/carbon"
 	"go.uber.org/zap"
+	"path/filepath"
+	"pescan/pe"
 	"reflect"
 	"testing"
 	"time"
@@ -115,7 +116,8 @@ func TestPEFile_ImpHash(t *testing.T) {
 }
 
 func TestGetType(t *testing.T) {
-	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	path := "C:\\Users\\86187\\Downloads\\Everything-1.4.1.1009.x64-Setup.exe"
 	//path := "C:\\Users\\13939\\Downloads\\PCQQ2021.exe"
 	m, err := NewPEFile(path, path, defaultLogger)
 	if err != nil {
@@ -264,4 +266,46 @@ func TestTimeformat(t *testing.T) {
 func TestFormat(t *testing.T) {
 	a := fmt.Sprintf("%02d.%02d", uint8(14), 0)
 	t.Log(a)
+}
+
+func TestGetPEFileInfo(t *testing.T) {
+	pattern := "C:\\Users\\86187\\Downloads\\*.exe"
+	//pattern := "E:\\VirusSample\\病毒样本\\天津检测样本\\天津检测中心病毒样本\\流行库\\B4流行库NEW（210-210）\\*.exe"
+	fileNameList, err := filepath.Glob(pattern)
+	if err != nil {
+		t.Log(err)
+		return
+	}
+	for _, fileName := range fileNameList {
+		res, _ := GetPEFileInfo(fileName, fileName, defaultLogger)
+		data, _ := json.Marshal(res)
+		fmt.Println(fileName + "------------------\n" + string(data))
+	}
+}
+
+func TestHex(t *testing.T) {
+	//path := "C:\\Users\\86187\\Downloads\\Everything-1.4.1.1009.x64-Setup.exe"
+	path := "E:\\VirusSample\\病毒样本\\天津检测样本\\天津检测中心病毒样本\\流行库\\B4流行库NEW（210-210）\\new057.exe"
+	f, err := debugPE.Open(path)
+	if err != nil {
+		t.Log(err)
+	}
+	data, _ := json.Marshal(f)
+	fmt.Println(string(data))
+
+	exe, err := pe.New(path, nil)
+	if err != nil {
+		t.Log(err)
+	}
+	err = exe.Parse()
+	if err != nil {
+		t.Log("parse: ", err)
+	}
+	data, _ = json.Marshal(exe)
+	fmt.Println(string(data))
+
+	res, _ := GetPEFileInfo(path, path, defaultLogger)
+	fmt.Printf("%+v\n", res)
+	data, _ = json.Marshal(res)
+	fmt.Println(string(data))
 }

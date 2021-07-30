@@ -2,7 +2,7 @@ package malpefile
 
 import (
 	"fmt"
-	"github.com/saferwall/pe"
+	"pescan/pe"
 	"time"
 )
 

@@ -1,7 +1,7 @@
 package malpefile
 
 import (
-	"github.com/saferwall/pe"
+	"pescan/pe"
 )
 
 func (p *PEFile) ExportsModuleName() {

@@ -8,6 +8,7 @@ type Result struct {
 	Imports             []map[string][]Function `json:"imports,omitempty"`
 	ImpHash             string                  `json:"imp_hash,omitempty"`
 	Sections            []Section               `json:"sections,omitempty"`
+	IsPacked            bool                    `json:"is_packed"`
 	Exports             []*Export               `json:"exports,omitempty"`
 	ExportsTimestamp    string                  `json:"exports_timestamp,omitempty"`
 	ExportsModuleName   string                  `json:"exports_module_name,omitempty"`

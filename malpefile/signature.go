@@ -3,8 +3,8 @@ package malpefile
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/saferwall/pe"
 	"go.mozilla.org/pkcs7"
+	"pescan/pe"
 	"reflect"
 )
 

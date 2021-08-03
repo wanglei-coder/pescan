@@ -23,7 +23,7 @@ var (
 	// than one day ahead of the current date timestamp.
 	AnoPETimeStampFuture = "File Header timestamp set to 0"
 
-	// NumberOfSections is reported when number of sections is larger or equal than 10.
+	// AnoNumberOfSections10Plus NumberOfSections is reported when number of sections is larger or equal than 10.
 	AnoNumberOfSections10Plus = "Number of sections is 10+"
 
 	// AnoNumberOfSectionsNull is reported when sections count's is 0.

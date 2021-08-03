@@ -1,0 +1,171 @@
+{
+  "data_directories": [
+    {
+      "name": "IMPORT",
+      "virtual_address": "0x391f0",
+      "size": 40
+    },
+    {
+      "name": "RESOURCE",
+      "virtual_address": "0x38000",
+      "size": 4392
+    },
+    {
+      "name": "TLS",
+      "virtual_address": "0x39b91",
+      "size": 24
+    }
+  ],
+  "info": {
+    "linker_version": "00.37",
+    "image_base": 4194304,
+    "compiletime": {
+      "date_time": "1970-01-01 08:00:00"
+    },
+    "number_of_sections": 2,
+    "os_version": "04.00",
+    "size_of_image": 274432,
+    "entry_point": "0x3928b",
+    "machine_type": "0x14c (IMAGE_FILE_MACHINE_I386)",
+    "calculated_file_size": 271884
+  },
+  "debug": {
+    "TimeDateStamp": 0
+  },
+  "imports": [
+    {
+      "KERNEL32.DLL": [
+        {
+          "name": "LoadLibraryA",
+          "address": "0x4391d4"
+        },
+        {
+          "name": "GetProcAddress",
+          "address": "0x4391d8"
+        },
+        {
+          "name": "VirtualProtect",
+          "address": "0x4391dc"
+        },
+        {
+          "name": "VirtualAlloc",
+          "address": "0x4391e0"
+        },
+        {
+          "name": "VirtualFree",
+          "address": "0x4391e4"
+        },
+        {
+          "name": "ExitProcess",
+          "address": "0x4391e8"
+        }
+      ]
+    }
+  ],
+  "imp_hash": "997cd92f15483faa1b30a0dbba124b78",
+  "sections": [
+    {
+      "name": ".Upack",
+      "rva": "0x1000",
+      "virtual_size": "0x37000",
+      "pointer_to_raw_data": 512,
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "name": ".rsrc",
+      "rva": "0x38000",
+      "virtual_size": "0xa60c",
+      "pointer_to_raw_data": 512,
+      "raw_data_size": 33770,
+      "entropy": 7.666974939449005,
+      "md5": "d3aa665440fc60ad37c662745b8be521"
+    }
+  ],
+  "is_packed": true,
+  "resource_version_info": {
+    "file_version": "1.0.0.0",
+    "product_version": "1.0.0.0"
+  },
+  "resources": [
+    {
+      "sublanguage": "SUBLANG_NEUTRAL",
+      "offset": "0x1f1f4",
+      "id": 1,
+      "size": "0x6400",
+      "language_desc": "unknown language",
+      "name": "DLL",
+      "language": "LANG_NEUTRAL",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "type": "text/plain",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "sublanguage": "SUBLANG_CHINESE_SIMPLIFIED",
+      "entropy": 1.743056220093445,
+      "offset": "0x38480",
+      "id": 2,
+      "size": "0xca8",
+      "language_desc": "Chinese-People's Republic of China",
+      "name": "RT_ICON",
+      "language": "LANG_CHINESE",
+      "sha256": "8db42dbf73b61fbdbc8af58d413f67c8b9329e76b111d38da1b63c1c98e5dc98",
+      "type": "application/octet-stream",
+      "md5": "17ff0163afa48239bc00ebf961672723"
+    },
+    {
+      "sublanguage": "SUBLANG_NEUTRAL",
+      "offset": "0x2629c",
+      "id": 3,
+      "size": "0x10",
+      "language_desc": "unknown language",
+      "name": "RT_RCDATA",
+      "language": "LANG_NEUTRAL",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "type": "text/plain",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "sublanguage": "SUBLANG_NEUTRAL",
+      "offset": "0x262ac",
+      "id": 4,
+      "size": "0xe0",
+      "language_desc": "unknown language",
+      "name": "RT_RCDATA",
+      "language": "LANG_NEUTRAL",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "type": "text/plain",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "sublanguage": "SUBLANG_CHINESE_SIMPLIFIED",
+      "entropy": 1.9192407046368487,
+      "offset": "0x381f8",
+      "id": 5,
+      "size": "0x14",
+      "language_desc": "Chinese-People's Republic of China",
+      "name": "RT_GROUP_ICON",
+      "language": "LANG_CHINESE",
+      "sha256": "f01c223e6cf0e0f5c1d990ad720488af398180adb1b92e61c2144cf11d3130f8",
+      "type": "image/x-icon",
+      "md5": "6f191f45d2ea96b2d22e9eafa1a55bd7"
+    },
+    {
+      "sublanguage": "SUBLANG_CHINESE_SIMPLIFIED",
+      "entropy": 3.0691151501226877,
+      "offset": "0x3820c",
+      "id": 6,
+      "size": "0x274",
+      "language_desc": "Chinese-People's Republic of China",
+      "name": "RT_VERSION",
+      "language": "LANG_CHINESE",
+      "sha256": "5e91a987e9c7d136455f2d15b6fe095ad18eb407e00018f7309d73b40492dc52",
+      "type": "application/octet-stream",
+      "md5": "c341751d0fe15ad49a204ce844ad412f"
+    }
+  ],
+  "signature": {
+    "certs": [
+      {}
+    ]
+  }
+}

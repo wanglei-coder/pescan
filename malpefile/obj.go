@@ -1,20 +1,21 @@
 package malpefile
 
 type Result struct {
-	RichHeaderInfo      []*RichHeaderInfo       `json:"rich_header_info,omitempty"`
-	DataDirectories     []*DataDirectory        `json:"data_directories,omitempty"`
-	Info                Info                    `json:"info"`
-	Debug               Debug                   `json:"debug"`
-	Imports             []map[string][]Function `json:"imports,omitempty"`
-	ImpHash             string                  `json:"imp_hash,omitempty"`
-	Sections            []Section               `json:"sections,omitempty"`
-	IsPacked            bool                    `json:"is_packed"`
-	Exports             []*Export               `json:"exports,omitempty"`
-	ExportsTimestamp    string                  `json:"exports_timestamp,omitempty"`
-	ExportsModuleName   string                  `json:"exports_module_name,omitempty"`
-	ResourceVersionInfo *ResourceVersionInfo    `json:"resource_version_info,omitempty"`
-	Resources           []*Resource             `json:"resources,omitempty"`
-	Signature           Signature               `json:"signature"`
+	RichHeaderInfo  []*RichHeaderInfo `json:"rich_header_info,omitempty"`
+	DataDirectories []*DataDirectory  `json:"data_directories,omitempty"`
+	Info            Info              `json:"info"`
+	Debug           Debug             `json:"debug"`
+	Imports         Import            `json:"imports,omitempty"`
+	//Imports             []map[string][]Function `json:"imports,omitempty"`
+	ImpHash             string               `json:"imp_hash,omitempty"`
+	Sections            []Section            `json:"sections,omitempty"`
+	IsPacked            bool                 `json:"is_packed"`
+	Exports             []*Export            `json:"exports,omitempty"`
+	ExportsTimestamp    string               `json:"exports_timestamp,omitempty"`
+	ExportsModuleName   string               `json:"exports_module_name,omitempty"`
+	ResourceVersionInfo *ResourceVersionInfo `json:"resource_version_info,omitempty"`
+	Resources           []*Resource          `json:"resources,omitempty"`
+	Signature           Signature            `json:"signature"`
 }
 
 type Info struct {
@@ -52,9 +53,11 @@ type Debug struct {
 	TimeDateStamp uint32
 }
 
-type Import struct {
-	Import map[string][]map[string]string
-}
+type Import []map[string][]Function
+
+//type Import struct {
+//	Import map[string][]map[string]string
+//}
 
 type Function struct {
 	Name    string `json:"name,omitempty"`

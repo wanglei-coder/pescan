@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-// Hex with "0x"
+// Hex startWith "0x"
 func Hex(i uint64) string {
 	return "0x" + strconv.FormatUint(i, 16)
 }

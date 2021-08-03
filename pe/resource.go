@@ -171,7 +171,7 @@ func (pe *File) parseResourceDirectoryEntry(rva uint32) *ImageResourceDirectoryE
 
 	// resource.__pad = resource.Name & 0xFFFF0000
 	// resource.Id = resource.Name & 0x0000FFFF
-
+	//fmt.Println(resource.Name, resource.Name & 0x0000FFFF)
 	// resource.DataIsDirectory = (resource.OffsetToData & 0x80000000) >> 31
 	// resource.OffsetToDirectory = resource.OffsetToData & 0x7FFFFFFF
 

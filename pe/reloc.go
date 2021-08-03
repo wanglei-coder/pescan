@@ -23,65 +23,65 @@ var (
 // should be performed. Different relocation types are defined for each type
 // of machine.
 const (
-	// The base relocation is skipped. This type can be used to pad a block.
+	// ImageRelBasedAbsolute The base relocation is skipped. This type can be used to pad a block.
 	ImageRelBasedAbsolute = 0
 
-	// The base relocation adds the high 16 bits of the difference to the 16-bit
+	// ImageRelBasedHigh The base relocation adds the high 16 bits of the difference to the 16-bit
 	// field at offset. The 16-bit field represents the high value of a 32-bit word.
 	ImageRelBasedHigh = 1
 
-	// The base relocation adds the low 16 bits of the difference to the 16-bit
+	// ImageRelBasedLow The base relocation adds the low 16 bits of the difference to the 16-bit
 	// field at offset. The 16-bit field represents the low half of a 32-bit word.
 	ImageRelBasedLow = 2
 
-	// The base relocation applies all 32 bits of the difference to the 32-bit
+	// ImageRelBasedHighLow The base relocation applies all 32 bits of the difference to the 32-bit
 	// field at offset.
 	ImageRelBasedHighLow = 3
 
-	// The base relocation adds the high 16 bits of the difference to the 16-bit
+	// ImageRelBasedHighAdj The base relocation adds the high 16 bits of the difference to the 16-bit
 	// field at offset. The 16-bit field represents the high value of a 32-bit
 	// word. The low 16 bits of the 32-bit value are stored in the 16-bit word
 	// that follows this base relocation. This means that this base relocation
 	// occupies two slots.
 	ImageRelBasedHighAdj = 4
 
-	// The relocation interpretation is dependent on the machine type.
+	// ImageRelBasedMIPSJmpAddr The relocation interpretation is dependent on the machine type.
 	// When the machine type is MIPS, the base relocation applies to a MIPS jump
 	// instruction.
 	ImageRelBasedMIPSJmpAddr = 5
 
-	// This relocation is meaningful only when the machine type is ARM or Thumb.
+	// ImageRelBasedARMMov32 This relocation is meaningful only when the machine type is ARM or Thumb.
 	// The base relocation applies the 32-bit address of a symbol across a
 	// consecutive MOVW/MOVT instruction pair.
 	ImageRelBasedARMMov32 = 5
 
-	// This relocation is only meaningful when the machine type is RISC-V. The
+	// ImageRelBasedRISCVHigh20 This relocation is only meaningful when the machine type is RISC-V. The
 	// base relocation applies to the high 20 bits of a 32-bit absolute address.
 	ImageRelBasedRISCVHigh20 = 5
 
-	// Reserved, must be zero.
+	// ImageRelReserved Reserved, must be zero.
 	ImageRelReserved = 6
 
-	// This relocation is meaningful only when the machine type is Thumb.
+	// ImageRelBasedThumbMov32 This relocation is meaningful only when the machine type is Thumb.
 	// The base relocation applies the 32-bit address of a symbol to a
 	// consecutive MOVW/MOVT instruction pair.
 	ImageRelBasedThumbMov32 = 7
 
-	// This relocation is only meaningful when the machine type is RISC-V.
+	// ImageRelBasedRISCVLow12i This relocation is only meaningful when the machine type is RISC-V.
 	// The base relocation applies to the low 12 bits of a 32-bit absolute
 	// address formed in RISC-V I-type instruction format.
 	ImageRelBasedRISCVLow12i = 7
 
-	// This relocation is only meaningful when the machine type is RISC-V.
+	// ImageRelBasedRISCVLow12s This relocation is only meaningful when the machine type is RISC-V.
 	// The base relocation applies to the low 12 bits of a 32-bit absolute
 	// address formed in RISC-V S-type instruction format.
 	ImageRelBasedRISCVLow12s = 8
 
-	// The relocation is only meaningful when the machine type is MIPS.
+	// ImageRelBasedMIPSJmpAddr16 The relocation is only meaningful when the machine type is MIPS.
 	// The base relocation applies to a MIPS16 jump instruction.
 	ImageRelBasedMIPSJmpAddr16 = 9
 
-	// The base relocation applies the difference to the 64-bit field at offset.
+	// ImageRelBasedDir64 The base relocation applies the difference to the 64-bit field at offset.
 	ImageRelBasedDir64 = 10
 )
 

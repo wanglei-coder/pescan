@@ -103,16 +103,35 @@ func TestNewPEFile(t *testing.T) {
 }
 
 func TestPEFile_ImpHash(t *testing.T) {
-	//path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
-	path := "C:\\Users\\86187\\Downloads\\WeChatSetup.exe"
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\86187\\Downloads\\WeChatSetup.exe"
 	m, err := NewPEFile(path, path, defaultLogger)
 	if err != nil {
 		defaultLogger.Error(err)
 		return
 	}
-	h, _ := m.peFile.ImpHash()
 
-	t.Log(h)
+	m.Run()
+	data, _ := json.Marshal(m.Data)
+	fmt.Println(string(data))
+	data, _ = json.Marshal(m.Resources)
+
+	fmt.Println(string(data))
+}
+
+func TestGetPEFileInfo2(t *testing.T) {
+	//offset := 60968664
+	path := "C:\\Users\\86187\\Downloads\\QQMusicSetup.exe"
+	//path := "C:\\Users\\86187\\Downloads\\WeChatSetup.exe"
+	m, err := NewPEFile(path, path, defaultLogger)
+	if err != nil {
+		defaultLogger.Error(err)
+		return
+	}
+
+	startOffset := m.peFile.GetOffsetFromRva(60968664)
+	t.Log(startOffset)
+	fmt.Println(m.peFile.ReadASCIIStringAtOffset(startOffset, 744))
 }
 
 func TestGetType(t *testing.T) {
@@ -269,8 +288,8 @@ func TestFormat(t *testing.T) {
 }
 
 func TestGetPEFileInfo(t *testing.T) {
-	pattern := "C:\\Users\\86187\\Downloads\\*.exe"
-	//pattern := "E:\\VirusSample\\病毒样本\\天津检测样本\\天津检测中心病毒样本\\流行库\\B4流行库NEW（210-210）\\*.exe"
+	//pattern := "C:\\Users\\86187\\Downloads\\*.exe"
+	pattern := "E:\\VirusSample\\病毒样本\\天津检测样本\\天津检测中心病毒样本\\流行库\\B4流行库NEW（210-210）\\*.exe"
 	fileNameList, err := filepath.Glob(pattern)
 	if err != nil {
 		t.Log(err)
@@ -281,6 +300,8 @@ func TestGetPEFileInfo(t *testing.T) {
 		data, _ := json.Marshal(res)
 		fmt.Println(fileName + "------------------\n" + string(data))
 	}
+
+	fmt.Println("len fileNameList: ", len(fileNameList))
 }
 
 func TestHex(t *testing.T) {

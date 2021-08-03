@@ -27,7 +27,6 @@ func getResources(peFile *pe.File) []*Resource {
 				if err != nil {
 					continue
 				}
-
 				var resource Resource
 				resource.Name = name
 				resource.Entropy = getEntropy(data)
@@ -65,6 +64,7 @@ func getName(resourceType pe.ResourceDirectoryEntry) string {
 	if resourceType.Name != "" {
 		return resourceType.Name
 	}
+
 	name, found := ResourceType[int(resourceType.ID)]
 	if found {
 		switch name.(type) {

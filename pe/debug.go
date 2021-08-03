@@ -12,17 +12,17 @@ import (
 
 // The following values are defined for the Type field of the debug directory entry:
 const (
-	// An unknown value that is ignored by all tools.
+	// ImageDebugTypeUnknown An unknown value that is ignored by all tools.
 	ImageDebugTypeUnknown = 0
 
-	// The COFF debug information (line numbers, symbol table, and string table).
+	// ImageDebugTypeCOFF The COFF debug information (line numbers, symbol table, and string table).
 	// This type of debug information is also pointed to by fields in the file headers.
 	ImageDebugTypeCOFF = 1
 
-	// The Visual C++ debug information.
+	// ImageDebugTypeCodeview The Visual C++ debug information.
 	ImageDebugTypeCodeview = 2
 
-	// The frame pointer omission (FPO) information. This information tells the
+	// ImageDebugTypeFPO The frame pointer omission (FPO) information. This information tells the
 	// debugger how to interpret nonstandard stack frames, which use the EBP
 	// register for a purpose other than as a frame pointer.
 	ImageDebugTypeFPO = 3

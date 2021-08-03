@@ -12,7 +12,7 @@ func (p *PEFile) Import() {
 
 	addressBase := getImageBase(p.peFile)
 
-	importList := make([]map[string][]Function, 0, numberOfImport)
+	importList := make(Import, 0, numberOfImport)
 	for _, imp := range p.peFile.Imports {
 		functionList := make([]Function, 0, len(imp.Functions))
 		for _, entry := range imp.Functions {
